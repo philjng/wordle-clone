@@ -28,6 +28,11 @@
     gap: 5px;
 }
 
+.solution {
+    display: inline;
+    cursor: pointer;
+}
+
 .tile {
     width: 100px;
     height: 100px;

@@ -1,3 +1,4 @@
+import { Line } from './components/Line';
 import './styles.css';
 import { useEffect, useState } from 'react';
 
@@ -6,12 +7,14 @@ const WORD_LENGTH = 5;
 
 function App() {
   const [isGameOver, setIsGameOver] = useState(false)
-  const [solution, setSolution] = useState("hello");
+  const [solution, setSolution] = useState("");
   const [guesses, setGuesses] = useState(Array(6).fill(null))
   const [currentGuess, setCurrentGuess] = useState("");
+  const [isHidden, setIsHidden] = useState(true)
 
+  // handler for user input
   useEffect(() => {
-    console.log(currentGuess, guesses, guesses[5], guesses[5] !== null)
+    // console.log(currentGuess, guesses, guesses[5], guesses[5] !== null)
     const handleType = (event) => {
       if (isGameOver) {
         return;
@@ -55,6 +58,7 @@ function App() {
     return () => window.removeEventListener("keydown", handleType);
   }, [currentGuess, isGameOver, solution, guesses])
 
+  // handler for fetching word from API
   useEffect(() => {
     const fetchWord = async () => {
       try {
@@ -66,7 +70,7 @@ function App() {
         const words = await response.json();
         const randomWord = words[Math.floor(Math.random() * words.length)]
 
-        // setSolution(randomWord.toLowerCase())
+        setSolution(randomWord.toLowerCase())
       } catch (error) {
         console.log("Error fetching word: ", error)
       }
@@ -78,46 +82,24 @@ function App() {
 
   return (
     <div className="board">
-        Solution: {solution}
+        <h3>Solution: 
+          <div className="solution" onClick={() => setIsHidden(!isHidden)}>{isHidden ? " *****" : " "  + solution}</div>
+        </h3>
         {
           guesses.map((guess, i) => {
             const isCurrentGuess = i === guesses.findIndex(val => val === null)
             return (
               <Line 
+                key={i}
                 guess={isCurrentGuess ? currentGuess : guess ?? ""} 
                 isFinal={!isCurrentGuess && guess !== null}
-                solution={solution}/>
+                solution={solution}
+                wordLength={WORD_LENGTH}/>
             )
           })
         }
     </div>
   );
-}
-
-const Line = ({ guess, isFinal, solution }) => {
-  const tiles = []
-
-  for (let i = 0; i < WORD_LENGTH; i++) {
-    const char = guess[i];
-    let className = "tile"
-
-    if (isFinal) {
-      if (char === solution[i]) {
-        className += " correct";
-      } else if (solution.includes(char)) {
-        className += " close";
-      } else {
-        className += " incorrect"
-       }
-    }
-
-    tiles.push(<div key={i} className={className}>{char}</div>)
-  }
-
-  return (
-    <div className='line'>
-      {tiles}
-    </div>)
 }
 
 export default App;
