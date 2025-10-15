@@ -10,11 +10,10 @@ function App() {
   const [solution, setSolution] = useState("");
   const [guesses, setGuesses] = useState(Array(6).fill(null))
   const [currentGuess, setCurrentGuess] = useState("");
-  const [isHidden, setIsHidden] = useState(true)
+  const [showSolution, setShowSolution] = useState(false)
 
   // handler for user input
   useEffect(() => {
-    // console.log(currentGuess, guesses, guesses[5], guesses[5] !== null)
     const handleType = (event) => {
       if (isGameOver) {
         return;
@@ -34,6 +33,7 @@ function App() {
         if (isCorrect || guesses[4] !== null) {
           console.log("GAME OVER")
           setIsGameOver(true)
+          setShowSolution(true)
         }
 
         const newGuesses = [...guesses]
@@ -55,7 +55,9 @@ function App() {
 
     window.addEventListener("keydown", handleType);
 
-    return () => window.removeEventListener("keydown", handleType);
+    return () => {
+      window.removeEventListener("keydown", handleType);
+    }
   }, [currentGuess, isGameOver, solution, guesses])
 
   // handler for fetching word from API
@@ -83,7 +85,7 @@ function App() {
   return (
     <div className="board">
         <h3>Solution: 
-          <div className="solution" onClick={() => setIsHidden(!isHidden)}>{isHidden ? " *****" : " "  + solution}</div>
+          <div className="solution" onClick={() => setShowSolution(!showSolution)}>{showSolution ? " "  + solution : " *****"}</div>
         </h3>
         {
           guesses.map((guess, i) => {
@@ -94,7 +96,9 @@ function App() {
                 guess={isCurrentGuess ? currentGuess : guess ?? ""} 
                 isFinal={!isCurrentGuess && guess !== null}
                 solution={solution}
-                wordLength={WORD_LENGTH}/>
+                wordLength={WORD_LENGTH}
+                isCurrent={isCurrentGuess}
+              />
             )
           })
         }

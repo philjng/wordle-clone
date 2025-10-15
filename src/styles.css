@@ -12,15 +12,18 @@
 }
 
 .correct {
-    background-color: #538d4e;
+    --background-color: #538d4e;
+    animation: flip 0.5s ease forwards
 }
 
 .close {
-    background-color: #b59f3b;
+    --background-color: #b59f3b;
+    animation: flip 0.5s ease forwards
 }
 
 .incorrect {
-    background-color: #3a3a3c;
+    --background-color: #3a3a3c;
+    animation: flip 0.5s ease forwards
 }
 
 .line {
@@ -44,4 +47,76 @@
     text-transform: uppercase;
 }
 
+.line > div:nth-child(2) {
+    animation-delay: 0.4s;
+}
 
+.line > div:nth-child(3) {
+    animation-delay: 0.8s;
+}
+
+.line > div:nth-child(4) {
+    animation-delay: 1.2s;
+}
+
+.line > div:nth-child(5) {
+    animation-delay: 1.6s;
+}
+
+.line > div.filled {
+    animation: bounce 0.2s ease-in-out forwards;
+}
+
+.jump {
+    animation: jump 0.5s ease 5s forwards; 
+}
+
+/* animations */
+@keyframes bounce {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        border-color: #565758;
+    }
+}
+
+@keyframes flip {
+    0% {
+        transform: rotateX(0);
+        background: #121213;
+        border-color: #3a3a3c;
+    }
+    45%{
+        transform: rotateX(90deg);
+        background: #121213;
+        border-color: #3a3a3c;
+    }
+    55%{
+        transform: rotateX(90deg);
+        background: var(--background-color);
+    }
+    100% {
+        transform: rotateX(0);
+        background: var(--background-color);
+    }
+}
+
+@keyframes jump {
+    0% {
+        transform: translateY(0);
+        background: var(--background-color);
+    }
+    50% {
+        transform: translateY(-2rem);
+        background: var(--background-color);
+    }
+    100% {
+        transform: translateY(0);
+        background: var(--background-color);
+    }
+}
