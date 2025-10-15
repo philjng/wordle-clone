@@ -3,6 +3,8 @@
 Simple wordle clone that pulls from a public API list of 5 letter words.
 ReactJS, and simple css animations.
 
+<img width="738" height="806" alt="image" src="https://github.com/user-attachments/assets/d3f8f2ef-417c-48bc-af62-ada54e75df84" />
+
 
 # Snippets from the Create React App README
 
